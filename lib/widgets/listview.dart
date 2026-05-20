@@ -1,52 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:library_management/model/student.dart';
+import 'package:library_management/widgets/student.dart';
+//import 'package:library_management/widgets/placeholder.dart';
+import 'package:library_management/widgets/edit.dart';
+import 'package:library_management/widgets/add.dart';
 
 class WidgetPage extends StatefulWidget {
-  const WidgetPage({super.key});
+  final List<Student> students;
+
+  const WidgetPage({super.key, required this.students});
 
   @override
   State<WidgetPage> createState() => _WidgetPageState();
 }
 
 class _WidgetPageState extends State<WidgetPage> {
-  // Manual Student Data
-  List<Student> students = [
-    Student(
-      name: "Jimit Patel",
-      id: "474",
-      book: "Flutter",
-      dueDate: DateTime(2026, 5, 22),
-    ),
-
-    Student(
-      name: "Harshang patel",
-      id: "471",
-      book: "Java",
-      dueDate: DateTime(2026, 5, 22),
-    ),
-
-    Student(
-      name: "haan patel",
-      id: "476",
-      book: "Java",
-      dueDate: DateTime(2026, 5, 22),
-    ),
-
-    Student(
-      name: "haan patel",
-      id: "477",
-      book: "Java",
-      dueDate: DateTime(2026, 5, 22),
-    ),
-
-    Student(
-      name: "Amit Kumar",
-      id: "103",
-      book: "Python",
-      dueDate: DateTime(2026, 5, 25),
-    ),
-  ];
-
   DateTime? selectedDate;
 
   // Date Picker
@@ -54,8 +21,8 @@ class _WidgetPageState extends State<WidgetPage> {
     DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime(2006),
-      lastDate: DateTime(2036),
+      firstDate: DateTime(2024),
+      lastDate: DateTime(2100),
     );
 
     if (picked != null) {
@@ -65,49 +32,54 @@ class _WidgetPageState extends State<WidgetPage> {
     }
   }
 
-  // Filter Data Date Wise
-  List<Student> filteredStudents() {
+  List<Student> get filteredStudents {
     if (selectedDate == null) {
-      return [];
+      return widget.students;
     }
 
-    return students.where((student) {
-      return student.dueDate == selectedDate;
+    return widget.students.where((student) {
+      return student.dueDate.day == selectedDate!.day &&
+          student.dueDate.month == selectedDate!.month &&
+          student.dueDate.year == selectedDate!.year;
     }).toList();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(134, 238, 238, 238),
-
+      backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
         title: const Text("Library Management"),
         centerTitle: true,
       ),
-
       body: Padding(
         padding: const EdgeInsets.all(16),
-
         child: Column(
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-              // Top Container
               children: [
                 ElevatedButton(
                   onPressed: pickDate,
-
                   child: Text(
                     selectedDate == null
                         ? "Select Date"
                         : "${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}",
                   ),
                 ),
+
+                Spacer(),
+
                 FloatingActionButton(
-                  onPressed: () {
-                    // Add Student Logic Here
+                  onPressed: () async {
+                    final newStudent = await Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Adddata(students: widget.students,)),
+                    );
+                    if (newStudent != null) {
+                      setState(() {
+                        widget.students.add(newStudent);
+                      });
+                    }
                   },
                   child: const Icon(Icons.add),
                 ),
@@ -115,9 +87,8 @@ class _WidgetPageState extends State<WidgetPage> {
             ),
             const SizedBox(height: 40),
 
-            // Student List
-            Container(
-              child: filteredStudents().isEmpty
+            Expanded(
+              child: filteredStudents.isEmpty
                   ? const Center(
                       child: Text(
                         "No Due Students",
@@ -125,69 +96,87 @@ class _WidgetPageState extends State<WidgetPage> {
                       ),
                     )
                   : ListView.builder(
-                      itemCount: filteredStudents().length,
-
+                      itemCount: filteredStudents.length,
                       itemBuilder: (context, index) {
-                        Student student = filteredStudents()[index];
-
+                        Student student = filteredStudents[index];
+                        var column = Column(
+                          children: [
+                            Text("Submitted"),
+                            Checkbox(
+                              value: student.submitted,
+                              onChanged: (value) {
+                                setState(() {
+                                  student.submitted = value!;
+                                });
+                              },
+                            ),
+                          ],
+                        );
                         return Container(
                           margin: const EdgeInsets.only(bottom: 15),
                           padding: const EdgeInsets.all(15),
-
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(15),
                           ),
 
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-
-                                children: [
-                                  Text(
-                                    student.name,
-                                    style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-
-                                  const SizedBox(height: 8),
-
-                                  Text("ID : ${student.id}"),
-
-                                  const SizedBox(height: 5),
-
-                                  Text("Book : ${student.book}"),
-
-                                  const SizedBox(height: 5),
-
-                                  Text(
-                                    "Due : ${student.dueDate.day}/${student.dueDate.month}/${student.dueDate.year}",
-                                  ),
-                                ],
-                              ),
-                              Container(
-                                decoration: BoxDecoration(
-                                color: const Color.fromARGB(255, 169, 52, 52),
-                                  
-                                ),
+                              Expanded(
                                 child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Text("Submitted"),
-
-                                    Checkbox(
-                                      value: student.submitted,
-
-                                      onChanged: (value) {
-                                        setState(() {
-                                          student.submitted = value!;
-                                        });
-                                      },
+                                    Text(
+                                      student.name,
+                                      style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
+                                    const SizedBox(height: 8),
+                                    Text("ID : ${student.id}"),
+                                    const SizedBox(height: 5),
+                                    Text("Book : ${student.book}"),
+                                    const SizedBox(height: 5),
+                                    Text(
+                                      "Due : ${student.dueDate.day}/${student.dueDate.month}/${student.dueDate.year}",
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                              Container(
+                                padding: EdgeInsets.all(15),
+                                margin: EdgeInsets.all(10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        IconButton(
+                                          onPressed: () async{
+                                            final result= await Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    EditData(student: student),
+
+                                              ),
+                                            );
+                                          
+                                          if(result == true){
+                                            setState(() {});
+                                          }
+                                          },
+                                          icon: Icon(Icons.edit),
+                                        ),
+                                        column, 
+                                      ],
+                                    ),
+                                    SizedBox(height: 10),
                                   ],
                                 ),
                               ),
