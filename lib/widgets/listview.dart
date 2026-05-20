@@ -69,20 +69,21 @@ class _WidgetPageState extends State<WidgetPage> {
 
                 Spacer(),
 
-                FloatingActionButton(
-                  onPressed: () async {
-                    final newStudent = await Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Adddata(students: widget.students,)),
-                    );
-                    if (newStudent != null) {
-                      setState(() {
-                        widget.students.add(newStudent);
-                      });
-                    }
-                  },
-                  child: const Icon(Icons.add),
-                ),
+                // Location: listview.dart -> FloatingActionButton
+            FloatingActionButton(
+              onPressed: () async {
+                // Expect a single Student object back from the Adddata screen
+                final Student? newStudent = await Navigator.pushNamed(context, '/add') as Student?;
+                
+                // If a student was successfully created, add it to the state list
+                if (newStudent != null) {
+                  setState(() {
+                    widget.students.add(newStudent);
+                  });
+                }
+              },
+              child: const Icon(Icons.add),
+            ),
               ],
             ),
             const SizedBox(height: 40),
@@ -158,13 +159,10 @@ class _WidgetPageState extends State<WidgetPage> {
                                       children: [
                                         IconButton(
                                           onPressed: () async{
-                                            final result= await Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    EditData(student: student),
-
-                                              ),
+                                            final result= await Navigator.pushNamed(
+                                              context, 
+                                              '/edit', 
+                                              arguments: student, // This is caught by settings.arguments in placeholder.dart
                                             );
                                           
                                           if(result == true){

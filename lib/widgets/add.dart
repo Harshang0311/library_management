@@ -33,14 +33,7 @@ class _AdddataState extends State<Adddata> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ),
+      appBar: AppBar(),
       body: Center(
         child: Container(
           height: 500,
@@ -203,20 +196,31 @@ class _AdddataState extends State<Adddata> {
                 ),
               ),
               SizedBox(height: 30),
+              // Location: add.dart -> Submit ElevatedButton
               ElevatedButton(
                 onPressed: () {
+                  // 1. Validate that a date was actually selected to prevent a null crash
+                  if (selectedDate == null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Please select a due date!")),
+                    );
+                    return;
+                  }
+
+                  // 2. Create the object
                   Student newStudent = Student(
                     name: nameController.text,
                     id: idController.text,
                     book: bookController.text,
                     dueDate: selectedDate!,
                   );
-                  widget.students.add(newStudent);
-                  Navigator.pop(context, widget.students);
+
+                  // 3. ONLY pop the new student object back. Do NOT call widget.students.add here.
+                  Navigator.pop(context, newStudent); 
                 },
-                child: Text("Submit!"),
+                child: const Text("Submit!"),
               ),
-            ],
+              ],
           ),
         ),
       ),

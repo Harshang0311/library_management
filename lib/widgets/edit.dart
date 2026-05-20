@@ -57,14 +57,7 @@ class _EditDataState extends State<EditData> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ),
+      appBar: AppBar(),
       body: Center(
         child: Container(
           height: 500,

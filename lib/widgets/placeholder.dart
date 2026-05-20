@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:library_management/widgets/student.dart';
 import 'package:library_management/widgets/listview.dart';
-//import 'package:library_management/widgets/add.dart';
+import 'package:library_management/widgets/add.dart';
+import 'package:library_management/widgets/edit.dart';
+import 'package:library_management/widgets/Splash_screen.dart';
+
+
+
 
 class home_page extends StatefulWidget {
   
@@ -54,12 +59,37 @@ class _home_pageState extends State<home_page> {
  @override
 Widget build(BuildContext context) {
 
-  return Scaffold(
+  return MaterialApp(
+    debugShowCheckedModeBanner: false,
+    initialRoute: '/splash',
 
-    body: WidgetPage(
-      students: students,
-      
-    ),
+    onGenerateRoute: (settings) {
+      switch (settings.name) {
+        case '/splash':
+            return MaterialPageRoute(builder: (context) => MyWidget());
+
+        case '/list':
+            return MaterialPageRoute(
+              builder: (context) => WidgetPage(students: students),
+            );
+
+        case '/add':
+            return MaterialPageRoute(builder: (context) => Adddata(students: students,));
+
+        case '/edit':
+            final student = settings.arguments as Student;
+
+            return MaterialPageRoute(
+              builder: (context) => EditData(student: student),
+            );
+
+         default:
+            return MaterialPageRoute(
+              builder: (context) =>
+                  const Scaffold(body: Center(child: Text('Route Not Found'))),
+            );
+      }
+    }
   );
 }
 }

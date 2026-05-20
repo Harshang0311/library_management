@@ -1,5 +1,7 @@
 
 import 'package:flutter/material.dart';
+import 'dart:async';
+
 
 class MyWidget extends StatefulWidget {
   const MyWidget({super.key});
@@ -10,8 +12,18 @@ class MyWidget extends StatefulWidget {
 
 class _MyWidgetState extends State<MyWidget> {
   @override
+  void initState() {
+    super.initState();
+    Timer(Duration(seconds: 3), () {
+      if (mounted) {
+        Navigator.pushReplacementNamed(context, '/list');
+      }
+    });
+  }
+  @override
   Widget build(BuildContext context) {
-    return Container(
+    return Scaffold(
+    body:Container(
       width: double.infinity,
       height: double.infinity,
       decoration: BoxDecoration(
@@ -19,6 +31,8 @@ class _MyWidgetState extends State<MyWidget> {
         begin: Alignment.topCenter,
         end:Alignment.bottomCenter)
       ),
+
+      
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -37,6 +51,6 @@ class _MyWidgetState extends State<MyWidget> {
           Text("© 2026 Library Management",style: TextStyle(color: Colors.black),)
         ],
       ),
-    );
+    ),);
   }
 }
