@@ -23,4 +23,14 @@ class Student {
       'submitted':submitted
     };
   }
+
+  factory Student.fromJson(Map<String,dynamic>json){
+    return Student(
+      name: json['name'] as String,
+      id: json['id'] as String,
+      book: json['book'] as String,
+      dueDate: DateTime.parse(json['dueDate']) as DateTime,
+      submitted: json['submitted'] as bool
+    );
+  }
 }

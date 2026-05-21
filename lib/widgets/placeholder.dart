@@ -65,6 +65,25 @@ class _home_pageState extends State<home_page> {
     await prefs.setString('students', jsonString);
   }
 
+Future<void> loadList() async {
+  SharedPreferences prefs =
+      await SharedPreferences.getInstance();
+  String? jsonString =
+      prefs.getString('students');
+  if (jsonString != null) {
+    List decodedList =
+        jsonDecode(jsonString);
+    setState(() {
+      students.clear();
+      students.addAll(
+        decodedList.map(
+          (item) => Student.fromJson(item),
+        ),
+      );
+    });
+  }
+}
+
  @override
 Widget build(BuildContext context) {
    
