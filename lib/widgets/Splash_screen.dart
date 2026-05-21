@@ -27,7 +27,7 @@ class _MyWidgetState extends State<MyWidget> {
       width: double.infinity,
       height: double.infinity,
       decoration: BoxDecoration(
-        gradient: LinearGradient(colors: [Color.fromARGB(255, 255, 255, 255),Color.fromARGB(197, 79, 174, 182)],
+        gradient: LinearGradient(colors: [Color.fromARGB(255, 247, 67, 67),Color.fromARGB(197, 79, 174, 182)],
         begin: Alignment.topCenter,
         end:Alignment.bottomCenter)
       ),

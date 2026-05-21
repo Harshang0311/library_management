@@ -4,8 +4,8 @@ import 'package:library_management/widgets/listview.dart';
 import 'package:library_management/widgets/add.dart';
 import 'package:library_management/widgets/edit.dart';
 import 'package:library_management/widgets/Splash_screen.dart';
-
-
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
 
 class home_page extends StatefulWidget {
@@ -20,7 +20,7 @@ class home_page extends StatefulWidget {
 class _home_pageState extends State<home_page> {
 
 
-  final List <Student> students =[
+  final List<Student> students =[
     Student(
       name: "Jimit Patel",
       id: "474",
@@ -56,9 +56,18 @@ class _home_pageState extends State<home_page> {
       dueDate: DateTime(2026, 5, 25),
     ),
   ];
+
+  List<Student> myList = [];
+
+  Future<void> saveList() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String jsonString = jsonEncode(students.map((student) => student.toJson()).toList());
+    await prefs.setString('students', jsonString);
+  }
+
  @override
 Widget build(BuildContext context) {
-
+   
   return MaterialApp(
     debugShowCheckedModeBanner: false,
     initialRoute: '/splash',
@@ -70,7 +79,7 @@ Widget build(BuildContext context) {
 
         case '/list':
             return MaterialPageRoute(
-              builder: (context) => WidgetPage(students: students),
+              builder: (context) => WidgetPage(students: students,saveList: saveList),
             );
 
         case '/add':

@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:library_management/widgets/student.dart';
-//import 'package:library_management/widgets/placeholder.dart';
+import 'package:library_management/widgets/placeholder.dart';
 // import 'package:library_management/widgets/edit.dart';
 // import 'package:library_management/widgets/add.dart';
 
 class WidgetPage extends StatefulWidget {
   final List<Student> students;
+  final Future<void> Function() saveList;
 
-  const WidgetPage({super.key, required this.students});
+  const WidgetPage({super.key, required this.students, required this.saveList});
 
   @override
   State<WidgetPage> createState() => _WidgetPageState();
@@ -47,7 +48,6 @@ class _WidgetPageState extends State<WidgetPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       appBar: AppBar(
         title: const Text("Library Management"),
         centerTitle: true,
@@ -55,7 +55,6 @@ class _WidgetPageState extends State<WidgetPage> {
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
-          
           children: [
             Row(
               children: [
@@ -67,40 +66,45 @@ class _WidgetPageState extends State<WidgetPage> {
                         : "${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}",
                   ),
                 ),
-                  if (selectedDate != null) ...[
-                    const SizedBox(width: 8), 
-                    SizedBox(
-                        height: 40, 
-                        child: FloatingActionButton.extended(
-                          // backgroundColor: Colors.red.shade50, 
-                          // foregroundColor: Colors.red,
-                          elevation: 0, 
-                          onPressed: () {
-                            setState(() {
-                              selectedDate = null; 
-                            });
-                          },
-                          
-                          label: const Text("Clear Filter"),)
+                if (selectedDate != null) ...[
+                  const SizedBox(width: 8),
+                  SizedBox(
+                    height: 40,
+                    child: FloatingActionButton.extended(
+                      // backgroundColor: Colors.red.shade50,
+                      // foregroundColor: Colors.red,
+                      elevation: 0,
+                      onPressed: () {
+                        setState(() {
+                          selectedDate = null;
+                        });
+                      },
+
+                      label: const Text("Clear Filter"),
                     ),
-                  ],
+                  ),
+                ],
 
                 Spacer(),
 
-            SizedBox(    
-            child:FloatingActionButton.extended(
-              elevation: 0,
-              onPressed: () async {
-                final Student? newStudent = await Navigator.pushNamed(context, '/add') as Student?;
-                
-                if (newStudent != null) {
-                  setState(() {
-                    widget.students.add(newStudent);
-                  });
-                }
-              },
-              label: const Icon(Icons.add),
-            ),)
+                SizedBox(
+                  child: FloatingActionButton.extended(
+                    elevation: 0,
+                    onPressed: () async {
+                      final Student? newStudent =
+                          await Navigator.pushNamed(context, '/add')
+                              as Student?;
+
+                      if (newStudent != null) {
+                        setState(() {
+                          widget.students.add(newStudent);
+                        });
+                        await widget.saveList();
+                      }
+                    },
+                    label: const Icon(Icons.add),
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 40),
@@ -122,10 +126,11 @@ class _WidgetPageState extends State<WidgetPage> {
                             Text("Submitted"),
                             Checkbox(
                               value: student.submitted,
-                              onChanged: (value) {
+                              onChanged: (value) async{
                                 setState(() {
                                   student.submitted = value!;
                                 });
+                                await widget.saveList();
                               },
                             ),
                           ],
@@ -175,20 +180,22 @@ class _WidgetPageState extends State<WidgetPage> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         IconButton(
-                                          onPressed: () async{
-                                            final result= await Navigator.pushNamed(
-                                              context, 
-                                              '/edit', 
-                                              arguments: student, 
-                                            );
-                                          
-                                          if(result == true){
-                                            setState(() {});
-                                          }
+                                          onPressed: () async {
+                                            final result =
+                                                await Navigator.pushNamed(
+                                                  context,
+                                                  '/edit',
+                                                  arguments: student,
+                                                );
+
+                                            if (result == true) {
+                                              setState(() {});
+                                              await widget.saveList();
+                                            }
                                           },
                                           icon: Icon(Icons.edit),
                                         ),
-                                        column, 
+                                        column,
                                       ],
                                     ),
                                     SizedBox(height: 10),

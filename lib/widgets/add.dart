@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:library_management/widgets/student.dart';
-//import 'package:library_management/widgets/placeholder.dart';
 
 class Adddata extends StatefulWidget {
   final List<Student> students;
-  Adddata({super.key, required this.students});
+
+  const Adddata({super.key, required this.students});
 
   @override
   State<Adddata> createState() => _AdddataState();
@@ -14,7 +14,9 @@ class _AdddataState extends State<Adddata> {
   TextEditingController nameController = TextEditingController();
   TextEditingController idController = TextEditingController();
   TextEditingController bookController = TextEditingController();
+
   DateTime? selectedDate;
+
   Future<void> pickDate() async {
     DateTime? pickedDate = await showDatePicker(
       context: context,
@@ -30,197 +32,222 @@ class _AdddataState extends State<Adddata> {
     }
   }
 
+  // Reusable TextField Widget
+  Widget buildTextField({
+    required String title,
+    required String hint,
+    required TextEditingController controller,
+    required IconData icon,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.indigo,
+            ),
+          ),
+
+          const SizedBox(height: 8),
+
+          TextField(
+            controller: controller,
+
+            decoration: InputDecoration(
+              prefixIcon: Icon(icon, color: Colors.indigo),
+
+              hintText: hint,
+
+              filled: true,
+              fillColor: Colors.white,
+
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: BorderSide.none,
+              ),
+
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: const BorderSide(color: Colors.indigo, width: 2),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text("Add Student"),
+        centerTitle: true,
+        backgroundColor: Colors.blue,
+      ),
+
+      backgroundColor: const Color(0xfff2f6ff),
+
       body: Center(
         child: Container(
-          height: 500,
-          width: 300,
+          width: 320,
+          padding: const EdgeInsets.all(20),
 
           decoration: BoxDecoration(
             color: Colors.white,
-            border: Border.all(color: Colors.black),
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(15),
+
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 8,
+                offset: Offset(0, 4),
+              ),
+            ],
           ),
 
           child: Column(
-            children: [
-              SizedBox(height: 20),
+            mainAxisSize: MainAxisSize.min,
 
-              Text(
-                "Add Student",
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+            children: [
+              const Text(
+                "Student Details",
+                style: TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blue,
+                ),
               ),
 
-              SizedBox(height: 30),
+              const SizedBox(height: 25),
 
               // NAME
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
+              TextField(
+                controller: nameController,
 
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: 100,
+                decoration: InputDecoration(
+                  labelText: "Student Name",
+                  prefixIcon: Icon(Icons.person),
 
-                      child: Text(
-                        "Name:",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-
-                    Expanded(
-                      child: TextField(
-                        controller: nameController,
-                        decoration: InputDecoration(
-                          hintText: "Enter Student Name",
-
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
               ),
 
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
               // ID
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
+              TextField(
+                controller: idController,
 
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: 100,
+                decoration: InputDecoration(
+                  labelText: "Student ID",
+                  prefixIcon: Icon(Icons.badge),
 
-                      child: Text(
-                        "ID:",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-
-                    Expanded(
-                      child: TextField(
-                        controller: idController,
-                        decoration: InputDecoration(
-                          hintText: "Enter Student ID",
-
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
               ),
 
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
-              // BOOK NAME
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
+              // BOOK
+              TextField(
+                controller: bookController,
 
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: 100,
+                decoration: InputDecoration(
+                  labelText: "Book Name",
+                  prefixIcon: Icon(Icons.book),
 
-                      child: Text(
-                        "Book:",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-
-                    Expanded(
-                      child: TextField(
-                        controller: bookController,
-                        decoration: InputDecoration(
-                          hintText: "Enter Book Name",
-
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
               ),
 
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
+              // DATE BUTTON
+              SizedBox(
+                width: double.infinity,
 
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: 100,
+                child: ElevatedButton.icon(
+                  onPressed: pickDate,
 
-                      child: Text(
-                        "Due Date:",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                  icon: const Icon(Icons.calendar_month),
+
+                  label: Text(
+                    selectedDate == null
+                        ? "Select Due Date"
+                        : "${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}",
+                  ),
+
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    foregroundColor: Colors.white,
+
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
                     ),
-
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: pickDate,
-
-                        child: Text(
-                          selectedDate == null
-                              ? "Select Date"
-                              : "${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}",
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
-              SizedBox(height: 30),
-              // Location: add.dart -> Submit ElevatedButton
-              ElevatedButton(
-                onPressed: () {
-                  // 1. Validate that a date was actually selected to prevent a null crash
-                  if (selectedDate == null) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Please select a due date!")),
+
+              const SizedBox(height: 25),
+
+              // SUBMIT BUTTON
+              SizedBox(
+                width: double.infinity,
+
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (selectedDate == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("Please select date")),
+                      );
+
+                      return;
+                    }
+
+                    Student newStudent = Student(
+                      name: nameController.text,
+                      id: idController.text,
+                      book: bookController.text,
+                      dueDate: selectedDate!,
                     );
-                    return;
-                  }
 
-                  // 2. Create the object
-                  Student newStudent = Student(
-                    name: nameController.text,
-                    id: idController.text,
-                    book: bookController.text,
-                    dueDate: selectedDate!,
-                  );
+                    Navigator.pop(context, newStudent);
+                  },
 
-                  // 3. ONLY pop the new student object back. Do NOT call widget.students.add here.
-                  Navigator.pop(context, newStudent); 
-                },
-                child: const Text("Submit!"),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    foregroundColor: Colors.white,
+
+                    padding: const EdgeInsets.symmetric(vertical: 15),
+
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+
+                  child: const Text(
+                    "Submit",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ),
               ),
-              ],
+            ],
           ),
         ),
       ),
