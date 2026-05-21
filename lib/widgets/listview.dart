@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:library_management/widgets/student.dart';
 //import 'package:library_management/widgets/placeholder.dart';
-import 'package:library_management/widgets/edit.dart';
-import 'package:library_management/widgets/add.dart';
+// import 'package:library_management/widgets/edit.dart';
+// import 'package:library_management/widgets/add.dart';
 
 class WidgetPage extends StatefulWidget {
   final List<Student> students;
@@ -47,7 +47,7 @@ class _WidgetPageState extends State<WidgetPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade200,
+      
       appBar: AppBar(
         title: const Text("Library Management"),
         centerTitle: true,
@@ -55,6 +55,7 @@ class _WidgetPageState extends State<WidgetPage> {
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
+          
           children: [
             Row(
               children: [
@@ -66,24 +67,40 @@ class _WidgetPageState extends State<WidgetPage> {
                         : "${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}",
                   ),
                 ),
+                  if (selectedDate != null) ...[
+                    const SizedBox(width: 8), 
+                    SizedBox(
+                        height: 40, 
+                        child: FloatingActionButton.extended(
+                          // backgroundColor: Colors.red.shade50, 
+                          // foregroundColor: Colors.red,
+                          elevation: 0, 
+                          onPressed: () {
+                            setState(() {
+                              selectedDate = null; 
+                            });
+                          },
+                          
+                          label: const Text("Clear Filter"),)
+                    ),
+                  ],
 
                 Spacer(),
 
-                // Location: listview.dart -> FloatingActionButton
-            FloatingActionButton(
+            SizedBox(    
+            child:FloatingActionButton.extended(
+              elevation: 0,
               onPressed: () async {
-                // Expect a single Student object back from the Adddata screen
                 final Student? newStudent = await Navigator.pushNamed(context, '/add') as Student?;
                 
-                // If a student was successfully created, add it to the state list
                 if (newStudent != null) {
                   setState(() {
                     widget.students.add(newStudent);
                   });
                 }
               },
-              child: const Icon(Icons.add),
-            ),
+              label: const Icon(Icons.add),
+            ),)
               ],
             ),
             const SizedBox(height: 40),
@@ -162,7 +179,7 @@ class _WidgetPageState extends State<WidgetPage> {
                                             final result= await Navigator.pushNamed(
                                               context, 
                                               '/edit', 
-                                              arguments: student, // This is caught by settings.arguments in placeholder.dart
+                                              arguments: student, 
                                             );
                                           
                                           if(result == true){
