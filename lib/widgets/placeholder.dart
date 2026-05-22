@@ -7,6 +7,8 @@ import 'package:library_management/widgets/Splash_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
+// flutter run -d chrome --web-port 8080
+
 
 class home_page extends StatefulWidget {
   
@@ -18,6 +20,10 @@ class home_page extends StatefulWidget {
 }
 
 class _home_pageState extends State<home_page> {
+
+  _home_pageState() {
+    loadList();
+  }
 
 
   final List<Student> students =[

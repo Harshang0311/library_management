@@ -14,23 +14,23 @@ class Student {
     this.submitted = false,
   });
 
-  Map<String,dynamic>toJson(){
-    return{
+  Map<String, dynamic> toJson() {
+    return {
       'name': name,
-      'id':id,
-      'book':book,
-      'dueDate':dueDate.toIso8601String(),
-      'submitted':submitted
+      'id': id,
+      'book': book,
+      'dueDate': dueDate.toIso8601String(),
+      'submitted': submitted,
     };
   }
 
-  factory Student.fromJson(Map<String,dynamic>json){
+  factory Student.fromJson(Map<String, dynamic> json) {
     return Student(
       name: json['name'] as String,
       id: json['id'] as String,
       book: json['book'] as String,
       dueDate: DateTime.parse(json['dueDate']) as DateTime,
-      submitted: json['submitted'] as bool
+      submitted: json['submitted'] as bool,
     );
   }
 }
