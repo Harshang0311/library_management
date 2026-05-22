@@ -25,7 +25,15 @@ class _MyWidgetState extends State<MyWidget> {
     return Scaffold(
       backgroundColor: const Color(0xfff2f6ff),
 
-      body: Column(
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('images/background.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
+
+      child:Column(
         children: [
 
           // VERSION
@@ -33,7 +41,7 @@ class _MyWidgetState extends State<MyWidget> {
             alignment: Alignment.topRight,
 
             child: Padding(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(40),
 
               child: Text(
                 "V : 1.0",
@@ -57,7 +65,7 @@ class _MyWidgetState extends State<MyWidget> {
 
           // TITLE
           const Text(
-            "Digital Library",
+            "LibraTrack",
 
             style: TextStyle(
               fontSize: 40,
@@ -84,14 +92,14 @@ class _MyWidgetState extends State<MyWidget> {
 
           // COPYRIGHT
           const Padding(
-            padding: EdgeInsets.only(bottom: 20),
+            padding: EdgeInsets.only(bottom: 50),
 
             child: Text(
-              "© 2026 Library Management",
+              "© 2026 LibraTrack",
             ),
           ),
         ],
       ),
-    );
+    ),);
   }
 }

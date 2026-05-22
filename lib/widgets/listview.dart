@@ -67,7 +67,16 @@ class _WidgetPageState extends State<WidgetPage> {
         elevation: 2,
       ),
 
-      body: Padding(
+      
+
+        body:Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('images/background1.png'),
+              fit: BoxFit.cover,
+            ),),
+
+            child: Padding(
         padding: const EdgeInsets.all(16),
 
         child: Column(
@@ -345,6 +354,6 @@ class _WidgetPageState extends State<WidgetPage> {
           ],
         ),
       ),
-    );
+    ));
   }
 }

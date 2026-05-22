@@ -38,14 +38,21 @@ class _AdddataState extends State<Adddata> {
       resizeToAvoidBottomInset: true,
 
       appBar: AppBar(
-        title: const Text("Add Student"),
+        title: const Text("Add Student",style: TextStyle(color: Colors.white),),
         centerTitle: true,
         backgroundColor: Colors.blue,
       ),
 
       backgroundColor: const Color(0xfff2f6ff),
 
-      body: SafeArea(
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('images/background1.png'),
+            fit: BoxFit.cover,
+          ),),
+
+      child:SafeArea(
   child: Center(
     child: Container(
       width: 320,
@@ -54,6 +61,7 @@ class _AdddataState extends State<Adddata> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(15),
+        
 
         boxShadow: const [
           BoxShadow(
@@ -205,6 +213,6 @@ class _AdddataState extends State<Adddata> {
     ),
   ),
 ),
-    );
+     ) );
   }
 }
