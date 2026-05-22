@@ -122,7 +122,7 @@ class _WidgetPageState extends State<WidgetPage> {
                     label: const Text("Clear"),
 
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
+                      backgroundColor: const Color.fromARGB(255, 229, 130, 123),
                       foregroundColor: Colors.white,
 
                       elevation: 5,
